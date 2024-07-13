@@ -41,9 +41,8 @@ jobs:
       - name: Untar
         run: |
           cd build
-          VERSION=$(cat VERSION)
-          tar x -zf $VERSION.$ARTIFACT_EXTENSION
-          rm $VERSION.$ARTIFACT_EXTENSION
+          tar x -zf *.tar.gz
+          rm *.tar.gz
 
       - name: Fetch Toit documentation
         run: |
