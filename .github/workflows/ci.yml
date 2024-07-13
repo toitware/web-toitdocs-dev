@@ -26,6 +26,7 @@ jobs:
         with:
           repository: ${{ env.REPOSITORY }}
           github-token: ${{ secrets.LEON_REPOSITORY_DISPATCH }}
+          run-id: ${{ github.event.inputs.run-id }}
           name: build
           path: build
 
