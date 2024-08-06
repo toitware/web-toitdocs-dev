@@ -34,10 +34,6 @@ jobs:
         run: |
           touch build/.nojekyll
 
-      - name: Debug ls
-        run: |
-          find
-
       - name: Untar
         run: |
           cd build
