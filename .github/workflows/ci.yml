@@ -7,7 +7,7 @@ on:
         description: The run-id of the workflow to fetch the artifacts from
         required: true
         type: number
-      toitdoc-version:
+      toit-version:
         description: 'The version of the Toit documentation to fetch'
         required: true
         type: string
@@ -43,7 +43,7 @@ jobs:
       - name: Fetch Toit documentation
         run: |
           # Fetch the Toit documentation from the GitHub release page.
-          VERSION=${{ github.event.inputs.toitdoc-version }}
+          VERSION=${{ github.event.inputs.toit-version }}
           if [[ -z "$VERSION" || "$VERSION" == "latest" ]]; then
             URL=https://github.com/toitlang/toit/releases/latest/download/toitdoc.json
           else
