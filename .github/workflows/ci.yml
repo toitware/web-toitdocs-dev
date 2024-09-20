@@ -11,8 +11,8 @@ on:
         description: 'The version of the Toit documentation to fetch'
         required: true
         type: string
-      toitdoc-run-id:
-        description: 'The run-id of the workflow to fetch the Toit documentation from'
+      toitlang-run-id:
+        description: 'The run-id of the toitlang/toit workflow to fetch the Toit documentation from'
         required: false
         type: string
         default:
@@ -51,22 +51,22 @@ jobs:
           rm *.tar.gz
 
       - name: Fetch Toit documentation from run-id
-        if: ${{ github.event.inputs.toitdoc-run-id }}
+        if: ${{ github.event.inputs.toitlang-run-id }}
         uses: actions/download-artifact@v4
         with:
           repository: ${{ env.TOITDOC_REPOSITORY }}
           github-token: ${{ secrets.GITHUB_TOKEN }}
-          run-id: ${{ github.event.inputs.toitdoc-run-id }}
+          run-id: ${{ github.event.inputs.toitlang-run-id }}
           name: toitdoc
           path: toitdoc-download
 
       - name: Move toitdocs.
-        if: ${{ github.event.inputs.toitdoc-run-id }}
+        if: ${{ github.event.inputs.toitlang-run-id }}
         run: |
           mv toitdoc-download/*.json build/toitdoc.json
 
       - name: Fetch Toit documentation
-        if: ${{ github.event.inputs.toitdoc-run-id == '' }}
+        if: ${{ github.event.inputs.toitlang-run-id == '' }}
         run: |
           # Fetch the Toit documentation from the GitHub release page.
           VERSION=${{ github.event.inputs.toit-version }}
