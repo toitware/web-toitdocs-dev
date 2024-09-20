@@ -11,15 +11,25 @@ on:
         description: 'The version of the Toit documentation to fetch'
         required: true
         type: string
+      toitlang-run-id:
+        description: 'The run-id of the toitlang/toit workflow to fetch the Toit documentation from'
+        required: false
+        type: string
+        default:
 
 env:
   REPOSITORY: toitware/web-toitdocs
+  TOITDOC_REPOSITORY: toitlang/toit
 
 jobs:
   deploy:
     runs-on: ubuntu-latest
 
     steps:
+      - name: Show inputs
+        if: github.event_name == 'workflow_dispatch'
+        run: echo "${{ toJSON(github.event.inputs) }}"
+
       # No need to checkout the project, since all we need is to download the
       # build artifact from the build step.
       - uses: actions/download-artifact@v4
@@ -40,7 +50,23 @@ jobs:
           tar x -zf *.tar.gz
           rm *.tar.gz
 
+      - name: Fetch Toit documentation from run-id
+        if: ${{ github.event.inputs.toitlang-run-id }}
+        uses: actions/download-artifact@v4
+        with:
+          repository: ${{ env.TOITDOC_REPOSITORY }}
+          github-token: ${{ secrets.GITHUB_TOKEN }}
+          run-id: ${{ github.event.inputs.toitlang-run-id }}
+          name: toitdoc
+          path: toitdoc-download
+
+      - name: Move toitdocs.
+        if: ${{ github.event.inputs.toitlang-run-id }}
+        run: |
+          mv toitdoc-download/*.json build/toitdoc.json
+
       - name: Fetch Toit documentation
+        if: ${{ github.event.inputs.toitlang-run-id == '' }}
         run: |
           # Fetch the Toit documentation from the GitHub release page.
           VERSION=${{ github.event.inputs.toit-version }}
