@@ -32,7 +32,7 @@ jobs:
 
       # No need to checkout the project, since all we need is to download the
       # build artifact from the build step.
-      - uses: actions/download-artifact@v4
+      - uses: actions/download-artifact@v5
         with:
           repository: ${{ env.REPOSITORY }}
           github-token: ${{ secrets.LEON_REPOSITORY_DISPATCH }}
@@ -52,7 +52,7 @@ jobs:
 
       - name: Fetch Toit documentation from run-id
         if: ${{ github.event.inputs.toitlang-run-id }}
-        uses: actions/download-artifact@v4
+        uses: actions/download-artifact@v5
         with:
           repository: ${{ env.TOITDOC_REPOSITORY }}
           github-token: ${{ secrets.GITHUB_TOKEN }}
