@@ -40,10 +40,6 @@ jobs:
           name: build
           path: build
 
-      - name: Disable Jekyll
-        run: |
-          touch build/.nojekyll
-
       - name: Untar
         run: |
           cd build
@@ -79,13 +75,10 @@ jobs:
           mkdir -p build
           curl -L $URL -o build/toitdoc.json
 
-      # This seems to be the simplest way to publish to a separate branch.
-      - name: Deploy
-        uses: peaceiris/actions-gh-pages@v4
+      - name: Publish to Cloudflare Pages
+        uses: cloudflare/pages-action@v1
         with:
-          github_token: ${{ secrets.GITHUB_TOKEN }}
-          publish_branch: gh-pages
-          publish_dir: ./build
-          # Optional. This will create a CNAME file so GitHub Pages serves it
-          # under this domain.
-          cname: libs-dev.toit.io
+          apiToken: ${{ secrets.CLOUDFLARE_API_TOKEN }}
+          accountId: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
+          projectName: libs-dev
+          directory: build
